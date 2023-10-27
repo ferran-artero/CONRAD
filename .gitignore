@@ -1,1 +1,3 @@
 .DS_Store
+*.cl
+src/edu/stanford/rsl/tutorial/RotationalAngiography/ResidualMotionCompensation/reconWithStreakReduction/ConeBeamBackprojectorStreakReductionWithMotionCompensation.java
