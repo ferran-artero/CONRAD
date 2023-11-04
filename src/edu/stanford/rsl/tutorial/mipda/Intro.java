@@ -91,24 +91,27 @@ public class Intro {
 		
 		//create a 3x3 matrix M with row vectors (1, 2, 3), (4, 5, 6) and (7, 8, 9)
 		//hint: have a look at the method setColValue(int, SimpleVector)
-		M = new SimpleMatrix(3, 3);//TODO
-		M.setRowValue(0, new SimpleVector(1.0, 2.0, 3.0));
-        M.setRowValue(1, new SimpleVector(4.0, 5.0, 6.0));
-        M.setRowValue(2, new SimpleVector(7.0, 8.0, 9.0));
+		M = new SimpleMatrix(3, 3);
+		M.setRowValue(0, new SimpleVector(new double[] { 1, 2, 3 }));
+		M.setRowValue(1, new SimpleVector(new double[] { 4, 5, 6 }));
+		M.setRowValue(2, new SimpleVector(new double[] { 7, 8, 9 }));
+		
 		if (M != null)
 			System.out.println("M = " + M.toString());
 				
 		//Mdeterminant: compute the determinant of M
 		Mdeterminant = M.determinant(); //TODO
-				
 		System.out.println("Determinant of matrix m: " + Mdeterminant);
 		
 		//transpose M
-		Mtrans = M.transposed();//TODO
+		Mtrans = M.transposed(); //TODO
+		System.out.println("M = " + Mtrans.toString());
 		//copy matrix using copy constructor
-		Mcopy = new SimpleMatrix(M);//TODO
+		Mcopy = new SimpleMatrix(M); //TODO
+		System.out.println("M copy = " + Mcopy.toString());
 		//transpose Mcopy in-place
 		Mcopy.transpose();
+		System.out.println("Mcopy trans = " + Mcopy.toString());
 		//get size
 		numRows = Mcopy.getRows();//TODO
 		numCols = Mcopy.getCols();//TODO
@@ -132,12 +135,15 @@ public class Intro {
 		//create a 3x3 matrix Mones of ones (all entries are 1)
 		Mones = new SimpleMatrix(3,3);
 		Mones.ones(); //TODO
+		System.out.println("Mones = " + Mones.toString());
 		//create a 3x3 matrix Mzeros of zeros (all entries are 0)
 		Mzeros = new SimpleMatrix(3,3);
 		Mzeros.zeros();
+		System.out.println("Mzeros = " + Mzeros.toString());
 		//create a 3x3 identity matrix
 		Midentity = new SimpleMatrix(3,3);
 		Midentity.identity();//TODO
+		System.out.println("Midentity = " + Midentity.toString());
 		
 		//matrix multiplication
 		//compute the matrix product of Mtrans and M
@@ -155,6 +161,7 @@ public class Intro {
 		
 		//extract the last column vector from matrix M
 		SimpleVector colVector = M.getCol(numCols-1);
+		System.out.println("Last column from M = " + colVector.toString());
 		if (M != null) {
 			if (M.getCols() > 2) {
 				colVector = M.getCol(2);
@@ -162,14 +169,13 @@ public class Intro {
 		}
 		
 		//extract the top 1x2 subvector from the last column of matrix M 
-		subVector = null;//TODO
+		subVector = colVector.getSubVec(0, 2);//TODO
 		if (subVector != null)
 			System.out.println("[m(0)(2); m(1)(2)] = " + subVector);
 		
 		//matrix elementwise multiplication
 		//compute a matrix which has the squared value of the elements of M in each component
-	    MsquaredElem = M;//TODO
-	    MsquaredElem.multiplyElementWiseBy(M);
+	    MsquaredElem = SimpleOperators.multiplyElementWise(M, M);//TODO
 	    if (MsquaredElem != null)
 	    	System.out.println("M squared Elements: " + MsquaredElem.toString());
 		
@@ -280,11 +286,8 @@ public class Intro {
 		//TODO (multiple code lines, hint: two for loops)
 		for (int x = 0; x < imageSizeX; x++) {
             for (int y = 0; y < imageSizeY; y++) {
-                // Calculate the distance from the current pixel to the center
                 double distance = Math.sqrt(Math.pow(x - imageSizeX/2, 2) + Math.pow(y - imageSizeY/2, 2));
-                // Check if the pixel is within the circle (inside the given radius)
                 if (distance <= radius) {
-                    // Set the pixel value to the inside value
                     image.setAtIndex(x, y, insideVal);
                 }
             }
@@ -294,7 +297,8 @@ public class Intro {
 		ImageJ ij = new ImageJ();
 		//display image using the Grid2D class methods
 		//TODO
-		image.show("Image of a circle");
+		if (image != null)
+			image.show();
 		
 		//copy an image
        	copy = new Grid2D(image); //TODO
@@ -305,7 +309,7 @@ public class Intro {
 	    // first use IJ to open the image
 		// then wrap it using the class ImageUtil (static)
 		// finally you need to extract the image with getSubGrid(0)
-		mrImage = ImageUtil.wrapImagePlus(IJ.openImage("C:/Users/ferra/OneDrive/Desktop/mri.jpg")).getSubGrid(0);//TODO
+		mrImage = ImageUtil.wrapImagePlus(IJ.openImage("C:/Users/ferra/OneDrive/Desktop/Medical Image Processing for Diagnostic Applications/workspace/CONRAD/data/mipda/mr_head_dorsal.jpg")).getSubGrid(0);//TODO
 		if (mrImage != null)
 			mrImage.show("MR image");
 		
@@ -326,7 +330,7 @@ public class Intro {
 		}
 
 		// trigger the convolution using ip, kernel, kw, kh
-		convolution = conv.convolve(ip, kernel, kw, kh);//TODO
+		convolution = conv.convolveFloat(ip, kernel, kw, kh);//TODO
 		if (ip != null) {
 			convolvedImage = ImageUtil.wrapFloatProcessor(ip);
 			convolvedImage.show("Convolved Image");
