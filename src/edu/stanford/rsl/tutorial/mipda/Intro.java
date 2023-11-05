@@ -10,8 +10,11 @@ import edu.stanford.rsl.conrad.numerics.SimpleOperators;
 import edu.stanford.rsl.conrad.numerics.SimpleVector;
 import ij.IJ;
 import ij.ImageJ;
+import ij.ImagePlus;
+import ij.io.FileSaver;
 import ij.plugin.filter.Convolver;
 import ij.process.FloatProcessor;
+import ij.process.ImageProcessor;
 
 
 /**
@@ -64,7 +67,7 @@ public class Intro {
      * You can change this to a location OUTSIDE of the Conrad workspace, where you want to save the result to.
      * If you leave it as it is, you find the result in your home directory.
      */
-    String outputDataLoc = System.getProperty("user.home") + "/mipda/output/";
+    String outputDataLoc = System.getProperty("user.home") + "/OneDrive/Desktop/Medical Image Processing for Diagnostic Applications/workspace/CONRAD/data/mipda/output/";
     
     
     /**
@@ -288,7 +291,7 @@ public class Intro {
             for (int y = 0; y < imageSizeY; y++) {
                 double distance = Math.sqrt(Math.pow(x - imageSizeX/2, 2) + Math.pow(y - imageSizeY/2, 2));
                 if (distance <= radius) {
-                    image.setAtIndex(x, y, insideVal);
+                    image.addAtIndex(x, y, insideVal);
                 }
             }
         }
@@ -338,13 +341,15 @@ public class Intro {
 
 		
 		//write an image to disk & check the supported output formats
-		imageFileName = "mri2.jpg"; // TODO: choose a valid filename (just file+ending, no path)
+		imageFileName = "mr12out.tif"; // TODO: choose a valid filename (just file+ending, no path)
 		
-		outFileName = "/c/Users/ferra/OneDrive/Desktop" + imageFileName;
+		outFileName = outputDataLoc + imageFileName;
 		
-		if (mrImage != null) {
+		if (convolvedImage != null) {
 			//TODO: save the image using IJ and ImageUtil
-			//IJ.save(IJ.openImage("C:/Users/ferra/OneDrive/Desktop/mri.jpg"), outFileName);
+			ImageProcessor convolvedIp = ImageUtil.wrapGrid2D(convolvedImage);
+			ImagePlus imagePlus = new ImagePlus("Convolved Image", convolvedIp);
+			IJ.save(imagePlus, outFileName);
 		}			
 	}
 	
